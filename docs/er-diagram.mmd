@@ -1,0 +1,49 @@
+erDiagram
+    TODOS {
+        BIGINT id PK "Auto-increment primary key"
+        VARCHAR text "Todo item text (max 255 chars)"
+        BOOLEAN completed "Completion status"
+        TIMESTAMP created_at "Creation timestamp"
+        TIMESTAMP updated_at "Last update timestamp"
+    }
+    
+    NOTIFICATION_SCHEDULE {
+        BIGINT id PK "Auto-increment primary key"
+        BIGINT task_id FK "Reference to todo item"
+        VARCHAR user_id "User identifier"
+        TIMESTAMP scheduled_time "When notification should be sent"
+        TIMESTAMP created_at "When schedule was created"
+        VARCHAR status "SCHEDULED, SENT, CANCELLED, FAILED"
+        VARCHAR priority "LOW, MEDIUM, HIGH, CRITICAL"
+        TEXT notification_content "Custom notification message"
+    }
+    
+    NOTIFICATION_HISTORY {
+        BIGINT id PK "Auto-increment primary key"
+        BIGINT task_id FK "Reference to todo item"
+        VARCHAR user_id "User identifier"
+        TIMESTAMP sent_at "When notification was sent"
+        TIMESTAMP dismissed_at "When user dismissed notification"
+        VARCHAR action "SENT, DISMISSED, SNOOZED, CLICKED"
+        VARCHAR device_info "Device information"
+    }
+    
+    USER_NOTIFICATION_PREFERENCES {
+        VARCHAR user_id PK "User identifier"
+        BOOLEAN notifications_enabled "Global notification toggle"
+        BIGINT default_timing_minutes "Default notification timing"
+        BOOLEAN sound_enabled "Sound notification toggle"
+        BOOLEAN vibration_enabled "Vibration notification toggle"
+    }
+    
+    USER_NOTIFICATION_CUSTOM_INTERVALS {
+        VARCHAR user_id FK "Reference to user preferences"
+        BIGINT interval_minutes "Custom notification interval"
+    }
+
+    %% Relationships
+    TODOS ||--o{ NOTIFICATION_SCHEDULE : "has scheduled notifications"
+    TODOS ||--o{ NOTIFICATION_HISTORY : "has notification history"
+    USER_NOTIFICATION_PREFERENCES ||--o{ USER_NOTIFICATION_CUSTOM_INTERVALS : "has custom intervals"
+    USER_NOTIFICATION_PREFERENCES ||--o{ NOTIFICATION_SCHEDULE : "user has preferences"
+    USER_NOTIFICATION_PREFERENCES ||--o{ NOTIFICATION_HISTORY : "user has history"

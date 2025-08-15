@@ -6,6 +6,13 @@ This document contains the Entity-Relationship (ER) diagram for the TodoApp proj
 
 ## ER Diagram
 
+### Visual PNG Version
+![TodoApp ER Diagram](er-diagram.png)
+
+*For high-resolution version, see [er-diagram-hd.png](er-diagram-hd.png)*
+
+### Interactive Mermaid Version
+
 ```mermaid
 erDiagram
     TODOS {
